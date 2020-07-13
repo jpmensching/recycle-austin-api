@@ -9,8 +9,10 @@
   "author": "J.P. Mensching",
   "license": "ISC",
   "dependencies": {
-    "@types/express": "^4.17.7",
+    "@types/express": "4.17.7",
     "express": "4.17.1",
+    "sequelize": "6.3.3",
+    "sqlite3": "^5.0.0",
     "typescript": "3.9.6"
   }
 }
