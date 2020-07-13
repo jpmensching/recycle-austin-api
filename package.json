@@ -1,0 +1,14 @@
+{
+  "name": "recycle-austin",
+  "version": "0.0.1",
+  "description": "A recycling center API.",
+  "main": "index.js",
+  "scripts": {
+    "build": "node_modules/.bin/tsc index.ts && node index.js"
+  },
+  "author": "J.P. Mensching",
+  "license": "ISC",
+  "dependencies": {
+    "typescript": "3.9.6"
+  }
+}
