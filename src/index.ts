@@ -1,29 +1,30 @@
-import Express from 'express';
-import { Sequelize, DataTypes } from 'sequelize';
-import { User } from './models/user';
+import express from 'express';
+import { Sequelize } from 'sequelize';
+import { User, initUsers } from './models';
 
-initDb();
+const sequelize = new Sequelize('sqlite::memory:');
 
-const app = Express();
+async function start() {
+  await initDb();
+  const app = express();
 
-app.get('/', (req, res) => {
-  res.send('Welcome to Recycle Austin!');
-});
+  app.get('/', (req, res) => {
+    res.send('Welcome to Recycle Austin!');
+  });
 
-app.listen(3000);
-console.log('App started on port 3000.');
+  app.listen(3000);
+  console.log('Starting on port 3000');
+}
 
 async function initDb() {
-  const sequelize = new Sequelize('sqlite::memory:');
-  User.init({
-    username: DataTypes.STRING,
-    password: DataTypes.STRING
-  }, { sequelize, modelName: 'user' });
-
+  initUsers(sequelize);
   await sequelize.sync();
-  const jane = await User.create({
+  const jane = new User({
     username: 'Jane',
     password: 'password'
   });
-  console.log(jane.toJSON());
+  await jane.save();
+  console.log(await User.findAll());
 }
+
+start();

@@ -4,7 +4,7 @@
   "description": "A recycling center API.",
   "main": "index.js",
   "scripts": {
-    "build": "node_modules/.bin/tsc --esModuleInterop --outDir build src/index.ts && node build/index.js"
+    "build": "node_modules/.bin/tsc && node build/index.js"
   },
   "author": "J.P. Mensching",
   "license": "ISC",
