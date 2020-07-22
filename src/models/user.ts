@@ -4,6 +4,7 @@ interface UserAttributes {
   id: number;
   username: string;
   password: string;
+  token?: string | null;
 }
 interface UserCreationAttributes extends Optional<UserAttributes, 'id'>{}
 
@@ -11,6 +12,7 @@ export class User extends Model<UserAttributes, UserCreationAttributes> implemen
   id!: number;
   username!: string;
   password!: string;
+  token!: string;
 
   // timestamps!
   readonly createdAt!: Date;
@@ -31,6 +33,10 @@ export function initUsers(sequelize: Sequelize) {
     password: {
       type: DataTypes.STRING,
       allowNull: false
+    },
+    token: {
+      type: DataTypes.STRING,
+      allowNull: true
     }
   }, { sequelize, modelName: 'user' });
 }
