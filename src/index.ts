@@ -1,9 +1,17 @@
 import bodyParser from 'body-parser';
 import express from 'express';
+import passport from 'passport';
+import { Strategy } from 'passport-http-bearer';
 import { Sequelize } from 'sequelize';
 import { User, initUsers } from './models';
 
 const sequelize = new Sequelize('sqlite::memory:');
+const passportStrategy = new Strategy((token, done) => {
+  console.log(token);
+  done(null, {});
+});
+
+passport.use(passportStrategy);
 
 async function start() {
   await initDb();
@@ -13,6 +21,10 @@ async function start() {
 
   app.get('/', (req, res) => {
     res.send('Welcome to Recycle Austin!');
+  });
+
+  app.get('/profile', passport.authenticate('bearer', { session: false }), (req, res) => {
+    res.send('authenticated!');
   });
 
   app.post('/login', async (req, res) => {
