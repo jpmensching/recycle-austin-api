@@ -17,9 +17,9 @@ const passportStrategy = new passport_http_bearer_1.Strategy(async (token, done)
         }
     });
     if (!user) {
-        done(null, false);
+        return done(null, false);
     }
-    done(null, user);
+    return done(null, user);
 });
 passport_1.default.use(passportStrategy);
 async function start() {

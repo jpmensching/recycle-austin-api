@@ -13,9 +13,9 @@ const passportStrategy = new Strategy(async (token, done) => {
     }
   });
   if (!user) {
-    done(null, false);
+    return done(null, false);
   }
-  done(null, user);
+  return done(null, user);
 });
 
 passport.use(passportStrategy);
