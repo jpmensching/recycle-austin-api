@@ -3,6 +3,7 @@ import express from 'express';
 import passport from 'passport';
 import { Strategy } from 'passport-http-bearer';
 import { Sequelize } from 'sequelize';
+import { registerAuthRoutes, registerUserRoutes } from './controllers';
 import { User, initUsers } from './models';
 
 const sequelize = new Sequelize('sqlite::memory:');
@@ -30,30 +31,8 @@ async function start() {
     res.send('Welcome to Recycle Austin!');
   });
 
-  app.get('/profile', passport.authenticate('bearer', { session: false }), async (req, res) => {
-    res.json(req.user);
-  });
-
-  app.post('/login', async (req, res) => {
-    const user = await User.findOne({
-      where: {
-        username: req.body.username
-      }
-    });
-
-    if (!user) {
-      res.status(400).json({
-        error: 'User not found!'
-      });
-      return;
-    }
-
-    const token = (new Date()).getMilliseconds();
-    await user.update({
-      token
-    });
-    res.json(user);
-  });
+  registerUserRoutes(app);
+  registerAuthRoutes(app);
 
   app.listen(3000);
   console.log('Starting on port 3000');
