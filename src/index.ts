@@ -6,9 +6,16 @@ import { Sequelize } from 'sequelize';
 import { User, initUsers } from './models';
 
 const sequelize = new Sequelize('sqlite::memory:');
-const passportStrategy = new Strategy((token, done) => {
-  console.log(token);
-  done(null, {});
+const passportStrategy = new Strategy(async (token, done) => {
+  const user = await User.findOne({
+    where: {
+      token
+    }
+  });
+  if (!user) {
+    done(null, false);
+  }
+  done(null, user);
 });
 
 passport.use(passportStrategy);
@@ -23,8 +30,8 @@ async function start() {
     res.send('Welcome to Recycle Austin!');
   });
 
-  app.get('/profile', passport.authenticate('bearer', { session: false }), (req, res) => {
-    res.send('authenticated!');
+  app.get('/profile', passport.authenticate('bearer', { session: false }), async (req, res) => {
+    res.json(req.user);
   });
 
   app.post('/login', async (req, res) => {

@@ -10,9 +10,16 @@ const passport_http_bearer_1 = require("passport-http-bearer");
 const sequelize_1 = require("sequelize");
 const models_1 = require("./models");
 const sequelize = new sequelize_1.Sequelize('sqlite::memory:');
-const passportStrategy = new passport_http_bearer_1.Strategy((token, done) => {
-    console.log(token);
-    done(null, {});
+const passportStrategy = new passport_http_bearer_1.Strategy(async (token, done) => {
+    const user = await models_1.User.findOne({
+        where: {
+            token
+        }
+    });
+    if (!user) {
+        done(null, false);
+    }
+    done(null, user);
 });
 passport_1.default.use(passportStrategy);
 async function start() {
@@ -22,8 +29,8 @@ async function start() {
     app.get('/', (req, res) => {
         res.send('Welcome to Recycle Austin!');
     });
-    app.get('/profile', passport_1.default.authenticate('bearer', { session: false }), (req, res) => {
-        res.send('authenticated!');
+    app.get('/profile', passport_1.default.authenticate('bearer', { session: false }), async (req, res) => {
+        res.json(req.user);
     });
     app.post('/login', async (req, res) => {
         const user = await models_1.User.findOne({

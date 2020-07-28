@@ -4,7 +4,7 @@ interface UserAttributes {
   id: number;
   username: string;
   password: string;
-  token?: string | null;
+  token: string | null;
 }
 interface UserCreationAttributes extends Optional<UserAttributes, 'id'>{}
 
