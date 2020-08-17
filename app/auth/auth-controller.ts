@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { User } from '../user';
+import { User } from '../users';
 
 export async function login(req: Request, res: Response) {
   const user = await User.findOne({
