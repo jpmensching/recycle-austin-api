@@ -4,7 +4,7 @@ import passport from 'passport';
 import { Strategy } from 'passport-http-bearer';
 import { Sequelize } from 'sequelize';
 import { router } from './routes';
-import { User, initUsers } from '../app/models';
+import { User, initUsers } from '../app/user';
 
 const sequelize = new Sequelize('sqlite::memory:');
 const passportStrategy = new Strategy(async (token, done) => {
