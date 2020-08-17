@@ -38,5 +38,4 @@ async function start() {
   console.log('Starting on port 3000');
 }
 
-initDb();
 start();
