@@ -8,7 +8,8 @@ const express_1 = __importDefault(require("express"));
 const passport_1 = __importDefault(require("passport"));
 const passport_http_bearer_1 = require("passport-http-bearer");
 const sequelize_1 = require("sequelize");
-const controllers_1 = require("./controllers");
+const auth_1 = require("./auth");
+const user_1 = require("./user");
 const models_1 = require("./models");
 const sequelize = new sequelize_1.Sequelize('sqlite::memory:');
 const passportStrategy = new passport_http_bearer_1.Strategy(async (token, done) => {
@@ -30,8 +31,8 @@ async function start() {
     app.get('/', (req, res) => {
         res.send('Welcome to Recycle Austin!');
     });
-    controllers_1.registerUserRoutes(app);
-    controllers_1.registerAuthRoutes(app);
+    app.use(user_1.userRouter);
+    app.use(auth_1.authRouter);
     app.listen(3000);
     console.log('Starting on port 3000');
 }
