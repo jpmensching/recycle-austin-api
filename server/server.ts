@@ -3,8 +3,7 @@ import express from 'express';
 import passport from 'passport';
 import { Strategy } from 'passport-http-bearer';
 import { Sequelize } from 'sequelize';
-import { authRouter } from '../app/auth';
-import { userRouter } from '../app/user';
+import { router } from './routes';
 import { User, initUsers } from '../app/models';
 
 const sequelize = new Sequelize('sqlite::memory:');
@@ -32,8 +31,7 @@ async function start() {
     res.send('Welcome to Recycle Austin!');
   });
 
-  app.use(userRouter);
-  app.use(authRouter);
+  app.use(router);
 
   app.listen(3000);
   console.log('Starting on port 3000');
