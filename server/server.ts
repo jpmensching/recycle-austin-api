@@ -5,6 +5,7 @@ import { Strategy } from 'passport-http-bearer';
 import { Sequelize } from 'sequelize';
 import { router } from './routes';
 import { User, initUsers } from '../app/user';
+import { initDb } from '../db';
 
 const sequelize = new Sequelize('sqlite::memory:');
 const passportStrategy = new Strategy(async (token, done) => {
@@ -37,16 +38,5 @@ async function start() {
   console.log('Starting on port 3000');
 }
 
-async function initDb() {
-  initUsers(sequelize);
-  await sequelize.sync();
-  const jane = new User({
-    username: 'Jane',
-    password: 'password',
-    token: null
-  });
-  await jane.save();
-  console.log(await User.findAll());
-}
-
+initDb();
 start();
